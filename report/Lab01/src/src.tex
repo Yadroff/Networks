@@ -1,0 +1,81 @@
+\section{Ход выполнения работы}
+
+\subsection{Настройка маршрутизатора}
+
+\begin{lstlisting}[language=bash, caption=Настройка имени]
+    system identity set name=R1
+\end{lstlisting}
+
+\begin{lstlisting}[language=bash, caption=Создание нового пользователя]
+    user/add name=checker password=PfxtvXtrth! group=full
+\end{lstlisting}
+
+\begin{lstlisting}[language=bash, caption=Настройка $IP$]
+    ip/address/add address=192.168.29.1/24 interface ether2 disabled=no
+\end{lstlisting}
+
+\begin{lstlisting}[language=bash, caption=Настройка $DNS$]
+    ip/dns/set servers=9.9.9.9 allow-remote-requests=yes
+\end{lstlisting}
+
+\begin{lstlisting}[language=bash, caption=Настройка $DHPS$]
+    ip/pool/add name=dhcp-pool1 ranges= 192.168.29.50-192.168.29.150
+    ip/dhcp-server/add address-pool=dhcp-pool1 disabled=no interface=ether2
+    ip/dhcp-server/network/add address=192.168.29.0/24 dns-server=192.168.29.1 gateway=192.168.29.1
+\end{lstlisting}
+
+\begin{lstlisting}[language=bash, caption=Настройка $NAT$]
+    ip/firewall/nat/add action=masquerade chain=srcnat out-interface=ether1
+\end{lstlisting}
+
+\begin{lstlisting}[language=bash, caption=Отключение ненужных соединений]
+    ip/service/disable telnet,ftp,www,www-ssl,api,api-ssl
+\end{lstlisting}
+
+\begin{lstlisting}[language=bash, caption=Настройка фаерволла]
+    /ip firewall filter
+    add action=accept chain=input connection-state=established,related in-interface=ether1
+    add action=accept chain=input in-interface=ether1 protocol=icmp
+    add action=drop chain=input in-interface=ether1    
+\end{lstlisting}
+
+\subsection{Настройка коммутатора}
+
+\begin{lstlisting}[language=bash, caption=Изменение пароля админа]
+    enable secret admin29   
+\end{lstlisting}
+
+\begin{lstlisting}[language=bash, caption=Настройка имени]
+    hostname SW1
+\end{lstlisting}
+
+\begin{lstlisting}[language=bash, caption=Создание пользователей]
+    username admin priv 15 pass 0 admin29
+    username checker priv 15 pass 0 PfxtvXtrth!    
+\end{lstlisting}
+
+\begin{lstlisting}[language=bash, caption=Настройка $ip$]
+    interface vlan 1 
+    no shutdown 
+    ip address 192.168.29.254 255.255.255.0
+    exit      
+\end{lstlisting}
+
+\begin{lstlisting}[language=bash, caption=Настройка $DNS$]
+    ip name-server 192.168.29.1
+    ip route 0.0.0.0 0.0.0.0 192.168.15.1        
+\end{lstlisting}
+
+\begin{lstlisting}[language=bash, caption=Настройка $SSH$]
+    ip domain name faq8.ru
+    crypto key generate rsa modulus 2048
+    ip ssh version 2
+    service password-encryption
+\end{lstlisting}
+
+\begin{lstlisting}[language=bash, caption=Отключение ненужных подключений]
+    line vty 0 4
+    transport input ssh
+    no ip http server
+    no ip http secure-server    
+\end{lstlisting}
