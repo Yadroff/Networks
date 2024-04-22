@@ -1,0 +1,210 @@
+Building configuration...
+
+Current configuration : 5006 bytes
+!
+! Last configuration change at 14:44:18 UTC Mon Apr 22 2024
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+service compress-config
+!
+hostname SW1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable secret 5 $1$a5bF$FF0KNvWDqUuro5XvzxVEe0
+!
+username admin privilege 15 password 7 050A020228421C50
+username checker privilege 15 password 7 08114A561D0F3D03001F0445
+aaa new-model
+!
+!         
+aaa authentication login default local
+!
+!
+!
+!
+!
+!
+aaa session-id common
+!
+!
+!
+!
+!
+!
+ip dhcp excluded-address 192.168.229.201
+ip dhcp excluded-address 192.168.29.201
+ip dhcp excluded-address 192.168.229.1
+ip dhcp excluded-address 192.168.129.201 192.168.129.205
+ip dhcp excluded-address 192.168.129.2
+ip dhcp excluded-address 192.168.229.2
+ip dhcp excluded-address 192.168.29.2
+ip dhcp excluded-address 192.168.129.1
+!         
+ip dhcp pool VLAN229
+ network 192.168.229.0 255.255.255.0
+ default-router 192.168.229.201 
+ dns-server 192.168.229.1 
+!
+ip dhcp pool VLAN329
+ network 192.168.29.0 255.255.255.0
+ default-router 192.168.29.201 
+!
+!
+ip domain-name faq8.ru
+ip name-server 192.168.229.1
+ip cef
+no ipv6 cef
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+spanning-tree vlan 1-99,129,229,329 priority 24576
+!
+!
+!         
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Port-channel1
+ switchport trunk allowed vlan 129,229,329
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+!
+interface Port-channel2
+ switchport trunk allowed vlan 129,229,329
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+!
+interface GigabitEthernet0/0
+ switchport trunk allowed vlan 129,229
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ negotiation auto
+!
+interface GigabitEthernet0/1
+ switchport trunk allowed vlan 129,229,329
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ negotiation auto
+ channel-group 1 mode active
+!
+interface GigabitEthernet0/2
+ switchport trunk allowed vlan 129,229,329
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ negotiation auto
+ channel-group 1 mode active
+!
+interface GigabitEthernet0/3
+ switchport trunk allowed vlan 129,229,329
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ negotiation auto
+!
+interface GigabitEthernet1/0
+ switchport trunk allowed vlan 129,229,329
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ negotiation auto
+ channel-group 2 mode active
+!
+interface GigabitEthernet1/1
+ switchport trunk allowed vlan 129,229,329
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ negotiation auto
+ channel-group 2 mode active
+!
+interface GigabitEthernet1/2
+ negotiation auto
+!
+interface GigabitEthernet1/3
+ negotiation auto
+!
+interface Vlan129
+ ip address 192.168.129.201 255.255.255.0
+!
+interface Vlan229
+ ip address 192.168.229.201 255.255.255.0
+!
+interface Vlan329
+ ip address 192.168.29.201 255.255.255.0
+!
+ip default-gateway 192.168.229.1
+ip forward-protocol nd
+!
+no ip http server
+no ip http secure-server
+!
+ip route 0.0.0.0 0.0.0.0 Vlan229 192.168.229.1
+ip ssh version 2
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+!
+!
+!
+!
+!         
+!
+!
+!
+control-plane
+!
+banner exec ^C
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was prov
+ided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this softwa
+re is expressly prohibited.
+^C
+banner incoming ^C
+IOSv - Cisco Systems Confidential -
+
+          
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was prov
+ided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this softwa
+re is expressly prohibited.
+^C
+banner login ^C
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was prov
+ided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this softwa
+re is expressly prohibited.
+^C        
+!
+line con 0
+line aux 0
+line vty 0 4
+ transport input ssh
+!
+!
+end

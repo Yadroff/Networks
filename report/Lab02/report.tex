@@ -1,0 +1,24 @@
+\documentclass[pdf, unicode, 12pt, a4paper, oneside, fleqn]{article}
+
+\usepackage{styles/log-style}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{listings}
+
+\begin{document}
+
+\graphicspath{ {./img/} }
+
+
+\input{src/titlepage}
+
+\tableofcontents
+\pagebreak
+
+\input{src/problem}
+\input{src/specs}
+\input{src/src}
+\input{src/thinks}
+% \input{src/literature}
+
+\end{document}

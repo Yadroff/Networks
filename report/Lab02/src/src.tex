@@ -1,0 +1,49 @@
+\section{Ход выполнения работы}
+
+\begin{lstlisting}[language=bash, caption=Настройка $PortChannel$]
+interface Port-Channel 1
+interface range gi0/0,gi0/1
+channel-group 1 mode active
+\end{lstlisting}
+
+\begin{lstlisting}[language=bash, caption=Перевод интерфейса в $trunk$]
+    interface Port-Channel 1
+    switchport trunk encapsulation dot1q
+    switchport mode trunk
+    switchport trunk allowed vlan 12,22,32    
+\end{lstlisting}
+
+\begin{lstlisting}[language=bash, caption=Настройка $VTP$ клиент / сервер]
+vtp domain faq8.ru
+vtp version 3
+vtp mode client
+vtp password 123
+vtp primary (server)
+\end{lstlisting}
+
+\begin{lstlisting}[language=bash, caption=Перевод порта в $access$]
+int gig1/0
+switchport mode access
+switchport access vlan 22
+\end{lstlisting}
+
+\begin{lstlisting}[language=bash,caption=Настройка $STP$ и его $Cost$]
+    show spanning-tree
+    spanning-tree vlan 1-99 root primary
+    int gig0/0
+    spanning-tree cost 3    
+\end{lstlisting}
+
+\begin{lstlisting}[language=bash, caption=Настройка $VLAN$]
+    interface FastEthernet0/0.10
+    encapsulation dot1q 10
+    ip address 192.168.29.1 255.255.255.0
+    description Sales
+\end{lstlisting}
+
+ \begin{lstlisting}[language=bash, caption=Настройка $NAT$]
+    int gig0/1.22
+    ip nat inside    
+\end{lstlisting}
+
+\pagebreak
